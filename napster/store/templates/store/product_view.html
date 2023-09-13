@@ -1,0 +1,19 @@
+{% extends 'store/main.html' %}
+{% load static %}
+
+{% block content %}
+
+<div class="row">
+    <div class="col-lg-6" >
+        <h2 class="$green-600">{{obj.name}}</h2>
+        <h3>Price: {{obj.price}} USD</h3>
+        <hr>
+
+        <button data-product="{{obj.id}}" data-action="add" class="btn btn-outline-secondary add-btn update-cart">Add to Cart</button>
+    </div>
+    <div class="col-lg-6">
+        <img src="{{obj.image.url}}" alt="">
+    </div>
+</div>
+
+{% endblock content %}

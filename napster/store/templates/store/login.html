@@ -1,0 +1,61 @@
+{% extends 'store/main.html' %}
+{% load static %}
+
+{% block content %}
+
+{% if messages %}
+{% for message in messages %}
+
+
+<div class="alert alert-warning alert-dismissible fade show" role="alert">
+    {{ message }}
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+{% endfor %}
+{% endif %}
+
+<div class="row">
+    <div class="col-lg-6">
+        <h4>Login</h4>
+        <hr>
+        <form method="POST" action="{% url 'store:store' %}">
+            {% csrf_token %}
+            <div class="mb-3">
+                <label for="exampleInputEmail1" class="form-label">username</label>
+                <input type="text" class="form-control" name="username" aria-describedby="emailHelp">
+            </div>
+            <div class="mb-3">
+                <label for="exampleInputPassword1" class="form-label">Password</label>
+                <input type="password" class="form-control" name="password">
+            </div>
+
+            <button type="submit" class="btn btn-primary">Login</button>
+        </form>
+    </div>
+
+    <div class="col-lg-6">
+        <h4>SignUp</h4>
+        <hr>
+            <form method="POST" action="{% url 'store:signup_user' %}">
+                {% csrf_token %}
+
+                {% for field in form %}
+                <p>
+                    {% if field.errors %}
+                    <ul class="errorlist">
+                        {% for error in field.errors %}
+                        <li>{{ error }}</li>
+                        {% endfor %}
+                    </ul>
+                    {% endif %}
+                    {{ field.label_tag }} {{ field }}
+                </p>
+                {% endfor %}
+                <input type="submit" value="Register" class="btn btn-danger"/>
+            </form>
+    </div>
+
+</div>
+{% endblock content %}
