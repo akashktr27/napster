@@ -40,19 +40,24 @@
         <hr>
             <form method="POST" action="{% url 'store:signup_user' %}">
                 {% csrf_token %}
-
-                {% for field in form %}
-                <p>
-                    {% if field.errors %}
-                    <ul class="errorlist">
-                        {% for error in field.errors %}
-                        <li>{{ error }}</li>
-                        {% endfor %}
-                    </ul>
-                    {% endif %}
-                    {{ field.label_tag }} {{ field }}
-                </p>
-                {% endfor %}
+<!--                {{form.as_p}}-->
+<!--                <div class="mb-3">-->
+<!--                <label for="name" class="form-label">name</label>-->
+<!--                <input type="text" class="form-control" name="name" aria-describedby="emailHelp">-->
+<!--                </div>-->
+<!--                <div class="mb-3">-->
+<!--                <label for="exampleInputEmail1" class="form-label">email</label>-->
+<!--                <input type="text" class="form-control" name="email" aria-describedby="emailHelp">-->
+<!--                </div>-->
+<!--                <div class="mb-3">-->
+<!--                <label for="exampleInputEmail1" class="form-label">username</label>-->
+<!--                <input type="text" class="form-control" name="username" aria-describedby="emailHelp">-->
+<!--                </div>-->
+<!--                <div class="mb-3">-->
+<!--                    <label for="exampleInputPassword1" class="form-label">Password</label>-->
+<!--                    <input type="password" class="form-control" name="password">-->
+<!--                </div>-->
+                {{form.as_p}}
                 <input type="submit" value="Register" class="btn btn-danger"/>
             </form>
     </div>

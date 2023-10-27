@@ -1,6 +1,10 @@
 {% extends 'store/main.html' %}
 {% load static %}
 {% block content %}
+		<script>
+			var test = JSON.parse(document.getElementById('new_data').textContent).msg.warning
+			document.getElementById("template_res").innerHTML = test
+		</script>
 	<div class="row">
 		{% for product in page_obj  %}
 		<div class="col-lg-4">
@@ -38,5 +42,8 @@
 		</span>
 	</div>
 	</div>
+
+		<div id="template_res"></div>
+		{{new_data|json_script:'new_data'}}
 
 {% endblock content %}

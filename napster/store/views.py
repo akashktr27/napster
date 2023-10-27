@@ -6,21 +6,24 @@ from .models import *
 from .utils import cookieCart, cartData, guestOrder
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
-from .forms import *
+from .forms import SignupForm
 from django.shortcuts import render
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 import pdb
 
+class DemoException(Exception):
+	pass
 
 def store(request):
-	print('search',request.GET.get('search'))
+
 	search_element = request.GET.get('search')
 
 	if search_element:
 		products = Product.objects.filter(name__icontains=search_element)
 	else:
-		products = Product.objects.all()
+		products = Product.objects.all().order_by('id')
+	x = Product.objects.values()
 
 	data = cartData(request)
 	cartItems = data['cartItems']
@@ -28,8 +31,8 @@ def store(request):
 	items = data['items']
 
 
-	context = {}
-	paginator = Paginator(products, 6)  # Show 25 contacts per page.
+
+	paginator = Paginator(products, 6)
 	page_number = request.GET.get("page")
 	page_obj = paginator.get_page(page_number)
 	context = {'page_obj': page_obj, 'cartItems': cartItems}
@@ -46,7 +49,7 @@ def store(request):
 			return render(request, 'store/login.html')
 
 
-
+	# raise DemoException('Demo exception')
 	return render(request, 'store/store.html', context)
 
 
@@ -97,7 +100,7 @@ def updateItem(request):
 
 def processOrder(request):
 	transaction_id = datetime.datetime.now().timestamp()
-	data = json.loads(request.body)
+	data = request.POST
 
 	if request.user.is_authenticated:
 		customer = request.user.customer
@@ -105,49 +108,55 @@ def processOrder(request):
 	else:
 		customer, order = guestOrder(request, data)
 
-	total = float(data['form']['total'])
+	# total = float(data['total'])
 	order.transaction_id = transaction_id
 
-	if total == order.get_cart_total:
-		order.complete = True
+	# if total == order.get_cart_total:
+	# 	order.complete = True
 	order.save()
 
 	if order.shipping == True:
 		ShippingAddress.objects.create(
 		customer=customer,
 		order=order,
-		address=data['shipping']['address'],
-		city=data['shipping']['city'],
-		state=data['shipping']['state'],
-		zipcode=data['shipping']['zipcode'],
+		address=data['address'],
+		city=data['city'],
+		state=data['state'],
+		zipcode=data['zipcode'],
 		)
 
-	return JsonResponse('Payment submitted..', safe=False)
+	return redirect('store:store')
 
 def login_user(request):
-	form = SignUpForm()
-
+	form = SignupForm()
 	context = {'form': form}
 	return render(request, 'store/login.html', context)
 
 def logout_user(request):
 	logout(request)
 	messages.success(request, 'You been logged out')
-	return render(request, 'store/login.html')
+	form = SignupForm()
+	context = {'form': form}
+	return render(request, 'store/login.html', context)
 
 def signup_user(request):
 	# pdb.set_trace()
 	if request.method == 'POST':
-		form = SignUpForm(request.POST)
+
+		form = SignupForm(request.POST)
+
+
+		print('eror',form.error_messages)
 		if form.is_valid():
 			user = form.save()
 			print('user saved here')
-
+			print()
 			login(request, user)
 			return redirect('store:store')
 		else:
-			form = SignUpForm()
+			form = SignupForm()
 			context = {'form': form}
+			messages.success(request, 'Error in Signup')
 			return render(request, 'store/login.html', context)
 
 def product_view(request, pk):
@@ -160,6 +169,21 @@ def product_view(request, pk):
 	}
 
 	return render(request, 'store/product_view.html', context)
+
+
+
+def profile(request):
+
+	customer = request.user.customer
+	order = Order.objects.filter(customer=customer).all()
+	print(order)
+	# print(customer.email)
+	context = {
+		'name': customer.name,
+		'email': customer.email,
+		'orders': order
+	}
+	return render(request, 'store/profile.html', context)
 
 
 

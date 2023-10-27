@@ -81,3 +81,12 @@ class ShippingAddress(models.Model):
 
 	def __str__(self):
 		return self.address
+
+class Address(models.Model):
+	customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
+	city = models.CharField(max_length=20)
+	state = models.CharField(max_length=20)
+	pincode = models.IntegerField(max_length=10)
+
+	def __str__(self):
+		return str(self.customer.name)
