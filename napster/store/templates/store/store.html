@@ -1,10 +1,19 @@
 {% extends 'store/main.html' %}
 {% load static %}
 {% block content %}
-		<script>
-			var test = JSON.parse(document.getElementById('new_data').textContent).msg.warning
-			document.getElementById("template_res").innerHTML = test
-		</script>
+
+{% if messages %}
+{% for message in messages %}
+
+
+<div class="alert alert-warning alert-dismissible fade show" role="alert">
+    {{ message }}
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+{% endfor %}
+{% endif %}
 	<div class="row">
 		{% for product in page_obj  %}
 		<div class="col-lg-4">

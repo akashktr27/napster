@@ -124,7 +124,7 @@ def processOrder(request):
 		state=data['state'],
 		zipcode=data['zipcode'],
 		)
-
+	messages.success(request, "Order places successfully, Order details under profile: " + str(transaction_id))
 	return redirect('store:store')
 
 def login_user(request):
