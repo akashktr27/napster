@@ -145,18 +145,15 @@ def signup_user(request):
 
 		form = SignupForm(request.POST)
 
-
-		print('eror',form.error_messages)
 		if form.is_valid():
 			user = form.save()
-			print('user saved here')
-			print()
-			login(request, user)
+
+			login(request, user, backend='django.contrib.auth.backends.ModelBackend')
 			return redirect('store:store')
 		else:
 			form = SignupForm()
 			context = {'form': form}
-			messages.success(request, 'Error in Signup')
+			messages.success(request, form.error_messages)
 			return render(request, 'store/login.html', context)
 
 def product_view(request, pk):
