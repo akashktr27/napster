@@ -33,6 +33,14 @@
 
             <button type="submit" class="btn btn-primary">Login</button>
         </form>
+        {% load  socialaccount %}
+        <hr>
+        <p>Social login</p>
+
+         <a href="{% provider_login_url 'google' %}?next=/">
+        <img src="https://developers.google.com/identity/images/g-logo.png" alt="Google Logo" />
+        </a>
+
     </div>
 
     <div class="col-lg-6">
@@ -40,24 +48,23 @@
         <hr>
             <form method="POST" action="{% url 'store:signup_user' %}">
                 {% csrf_token %}
-<!--                {{form.as_p}}-->
-<!--                <div class="mb-3">-->
-<!--                <label for="name" class="form-label">name</label>-->
-<!--                <input type="text" class="form-control" name="name" aria-describedby="emailHelp">-->
-<!--                </div>-->
-<!--                <div class="mb-3">-->
-<!--                <label for="exampleInputEmail1" class="form-label">email</label>-->
-<!--                <input type="text" class="form-control" name="email" aria-describedby="emailHelp">-->
-<!--                </div>-->
-<!--                <div class="mb-3">-->
-<!--                <label for="exampleInputEmail1" class="form-label">username</label>-->
-<!--                <input type="text" class="form-control" name="username" aria-describedby="emailHelp">-->
-<!--                </div>-->
-<!--                <div class="mb-3">-->
-<!--                    <label for="exampleInputPassword1" class="form-label">Password</label>-->
-<!--                    <input type="password" class="form-control" name="password">-->
-<!--                </div>-->
-                {{form.as_p}}
+
+
+                <div class="mb-3">
+                  <label>username</label>
+                  <input type="text" class="form-control" name="username">
+                </div>
+                <div class="mb-3">
+                  <label>password</label>
+                  <input type="password" class="form-control" name="password1">
+                </div>
+
+                <div class="mb-3">
+                  <label>confirm password</label>
+                  <input type="password" class="form-control" name="password2">
+                </div>
+
+
                 <input type="submit" value="Register" class="btn btn-danger"/>
             </form>
     </div>
