@@ -1,0 +1,4 @@
+napster/__pycache__/
+store/__pycache__/
+store/migrations/
+store/migrations/__pycache__/
