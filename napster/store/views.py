@@ -9,7 +9,6 @@ from django.contrib import messages
 from .forms import SignupForm
 from django.shortcuts import render
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-
 import pdb
 
 class DemoException(Exception):
@@ -173,11 +172,13 @@ def profile(request):
 
 	customer = request.user.customer
 	order = Order.objects.filter(customer=customer).all()
-	print(order)
 	# print(customer.email)
 	context = {
 		'name': customer.name,
 		'email': customer.email,
+		'gender': customer.gender,
+		'contact': customer.contact,
+		'address': customer.Address,
 		'orders': order
 	}
 	return render(request, 'store/profile.html', context)
